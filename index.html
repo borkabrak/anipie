@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dynamic Animated Pie Chart</title>
+
+    <link rel="stylesheet/less" href="styles.less">
+    <script src="/script/less/less.js"></script>
+
+    <script src="/script/raphael/raphael.js"></script>
+    <script src="piechart.js"></script>
+
+<script>
+window.onload = function(){
+    piechart = Raphael("holder").PieChart({
+        coke: 99,
+        pepsi: 44,
+        "dr-pepper": 50
+    });
+}
+</script>
+
+</head>
+
+<body>
+
+<h1>Dynamic Animated Pie Chart</h1>
+
+<div id="holder"></div>
+
+</body>
+
+</html>
