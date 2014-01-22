@@ -11,7 +11,7 @@ Raphael.fn.pieChart = function(data){
     var me = this;
     var total_value = Object.keys(data).map(function(e){ return data[e]}).reduce(function(x,y){ return x +y });
 
-    me.paths = me.set();
+    me.elements = me.set();
     me.base = me.circle(200, 200, 100); 
 
     me.customAttributes.sector = function(angle1, angle2){
@@ -41,7 +41,7 @@ Raphael.fn.pieChart = function(data){
 
         var angle2 = angle1 + (360 / total_value * value);
         console.log("a1:%s a2:%s", angle1, angle2);
-        me.paths.push(me.path().attr({sector: [angle1, angle2]}));
+        me.elements.push(me.path().attr({sector: [angle1, angle2]}));
         angle1 = angle1 + angle2;
     });
 
