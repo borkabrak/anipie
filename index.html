@@ -7,6 +7,7 @@
     <link rel="stylesheet/less" href="styles.less">
     <script src="/script/less/less.js"></script>
 
+    <script src="/script/jquery/jquery.js"></script>
     <script src="/script/raphael/raphael.js"></script>
     <script src="piechart.js"></script>
 
@@ -19,8 +20,9 @@ window.onload = function(){
         "dr-pepper": 90
     };
 
-    var single = {
-        guitar: 30
+    var music = {
+        guitar: 300,
+        banjo:110,
     };
 
     var pants = {
@@ -28,7 +30,14 @@ window.onload = function(){
         slacks: 50
     };
 
-    piechart = Raphael("holder").pieChart(pants);
+    piechart = Raphael("holder").pieChart(music);
+
+
+    //----------------------------------------------
+
+    $("#add").click(function(event){
+        piechart.add_sector("tweed", 30);
+    });
 
 }
 </script>
@@ -41,6 +50,7 @@ window.onload = function(){
 
 <div id="holder"></div>
 <div id="log"></div>
+<button id="add">Add Sector</button>
 
 </body>
 

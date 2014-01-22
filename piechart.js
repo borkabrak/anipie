@@ -1,60 +1,76 @@
-var log = function(text){
-    // log output
-    console.log("log: %s", text);
-    document.getElementById("log").innerHTML += text + "<br>";
-};
-
 Raphael.fn.pieChart = function(data){
 
     // Create a piechart.
     //
-    // data = {
-    //      label: value,
+    // USAGE:
+    // pieChart({
+    //      label1: value1,
+    //      label2: value2,
     //      . . .
-    //      }
+    //      });
     
     'use strict';
+
     var me = this;
-    var total_value = Object.keys(data).map(function(e){ return data[e]}).reduce(function(x,y){ return x +y });
-
-    me.elements = me.set();
+    me.data = data;
+    me.sectors = me.set();
     me.base = me.circle(200, 200, 100); 
+    me.total_value = Object.keys(me.data).map(function(e){ return me.data[e]}).reduce(function(x,y){ return x +y });
 
-    me.customAttributes.sector = function(angle1, angle2){
+    me.customAttributes.sector = function(startAngle, endAngle){
         // Give angle in degrees
         
         var r = me.base.attrs.r,
             cx = me.base.attrs.cx,
             cy = me.base.attrs.cy,
-            flag = (angle2 - angle1) > 180,
-            color = Math.random(); 
+            flag = (endAngle - startAngle) > 180,
+            color = (endAngle - startAngle) / 360;
 
         // convert to radians
-        angle1 = (angle1 % 360) * (Math.PI / 180);
-        angle2 = (angle2 % 360) * (Math.PI / 180);
+        startAngle = (startAngle % 360) * (Math.PI / 180);
+        endAngle = (endAngle % 360) * (Math.PI / 180);
         
         return {   
             path:[ 
                 ["M", cx, cy],
-                ["l", r * Math.cos(angle1), r * Math.sin(angle1) ],
-                ["A", r, r, 0, +flag, 1, cx + r * Math.cos(angle2), cy + r * Math.sin(angle2)],
+                ["l", r * Math.cos(startAngle), r * Math.sin(startAngle) ],
+                ["A", r, r, 0, +flag, 1, cx + r * Math.cos(endAngle), cy + r * Math.sin(endAngle)],
                 ["z"]
             ],
-            fill: "hsb(" + color + ", .75, .8)"
+            fill: "hsb(" + color + ", .75, .8)",
+            stroke: "white",
+            "stroke-width": "2px"
         };
     };
 
     // Draw sectors
-    var angle1 = 0;
-    Object.keys(data).forEach(function(label){
-        var value = data[label];
+    me.draw = function(){
+        var startAngle = 0;
+        me.sectors.remove();
+        Object.keys(me.data).forEach(function(label){
+            var value = me.data[label];
+            var endAngle = startAngle + (360 / me.total_value * value);
 
-        var angle2 = angle1 + (360 / total_value * value);
-        log( "angle1: " + angle1 + " angle2: " + angle2 );
+            me.sectors.push(me.path().attr({sector: [startAngle, endAngle]}));
 
-        me.elements.push(me.path().attr({sector: [angle1, angle2]}));
-        angle1 = angle1 + angle2;
-    });
+            startAngle = startAngle + endAngle;
+        });
+    };
 
+    // Add sector
+    me.add_sector = function(label, value){
+        log("add_sector(\"" + label + "\" ," + value + ")");
+        me.data[label] = value;
+        me.draw();
+    };
+
+    me.draw();
     return me;
 };
+
+var log = function(text){
+    // log output
+    console.log("log('%s')", text);
+    document.getElementById("log").innerHTML += text + "<br>";
+};
+
