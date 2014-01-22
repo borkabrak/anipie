@@ -12,11 +12,23 @@
 
 <script>
 window.onload = function(){
-    piechart = Raphael("holder").PieChart({
-        coke: 99,
-        pepsi: 44,
-        "dr-pepper": 50
-    });
+    var cross = {
+        coke: 90,
+        pepsi: 90,
+        "mountain-dew": 90,
+        "dr-pepper": 90
+    };
+
+    var single = {
+        guitar: 30
+    };
+
+    var pants = {
+        jeans: 100,
+        slacks: 50
+    };
+
+    piechart = Raphael("holder").pieChart(pants);
 }
 </script>
 
