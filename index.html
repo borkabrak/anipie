@@ -14,7 +14,7 @@
 <script>
 var log = function(text){
     // log output
-    console.log("log('%s')", text);
+    console.log("LOG » %s", text);
     document.getElementById("log").innerHTML += text + "<br>";
 };
 
@@ -22,8 +22,8 @@ window.onload = function(){
     var cross = {
         coke: 90,
         pepsi: 90,
-        "mountain-dew": 90,
-        "dr-pepper": 90
+        dew: 90,
+        pepper: 90
     };
 
     var music = {
@@ -34,10 +34,10 @@ window.onload = function(){
 
     var pants = {
         jeans: 100,
-        slacks: 50
+        slacks: 500
     };
 
-    chart = Raphael("holder", 600, 400).pieChart(200, 200, 100, pants);
+    chart = Raphael("holder", 600, 400).pieChart(200, 200, 100, cross);
 
     //-- ACTIONS --------------------------------------------
 

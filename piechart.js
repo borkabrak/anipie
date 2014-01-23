@@ -46,14 +46,10 @@ Raphael.fn.pieChart = function(x, y, radius, data){
             me.cy + me.radius * Math.sin(endAngle) 
         ];
 
-        var lineto = ["l", me.radius * Math.cos(startAngle), me.radius * Math.sin(startAngle) ];
-
-        console.log("Arc:%o", arc);
-
         return {   
             path:[ 
                 ["M", me.cx, me.cy],
-                lineto,
+                ["l", me.radius * Math.cos(startAngle), me.radius * Math.sin(startAngle) ],
                 arc,
                 ["z"]
             ],
@@ -69,11 +65,13 @@ Raphael.fn.pieChart = function(x, y, radius, data){
     // Add sectors
     var startAngle = 0;
     me.labels().forEach(function(label){
+        log(label);
         var value = data[label];
         var angle = value / me.total() * 360;
         var endAngle = startAngle + angle;
+        log("Wedge '" + label + " from " + startAngle + "° to " + endAngle + "°");
         var wedge = me.path().attr({wedge: [startAngle, startAngle + angle]});
-        startAngle += endAngle;
+        startAngle = endAngle;
     });
 
     return me;
