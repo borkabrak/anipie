@@ -35,9 +35,13 @@ window.onload = function(){
 
     //----------------------------------------------
 
-    $("#add").click(function(event){
+    $("button#add").click(function(event){
         piechart.add_sector($("#label").val(), $("#value").val());
         $("#label").val("test" + ( parseInt($("#label").val().match(/\d+/)[0]) + 1 ));
+    });
+
+    $("button#clear-log").click(function(event){
+        $("#log").html("");
     });
 
 }
@@ -54,6 +58,7 @@ window.onload = function(){
 <input id="value" placeholder="Value" value="120">
 <button id="add">Add Sector</button>
 <div id="log"></div>
+<button id="clear-log">Clear</button>
 
 </body>
 
