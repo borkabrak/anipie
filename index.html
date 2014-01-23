@@ -12,6 +12,12 @@
     <script src="piechart.js"></script>
 
 <script>
+var log = function(text){
+    // log output
+    console.log("log('%s')", text);
+    document.getElementById("log").innerHTML += text + "<br>";
+};
+
 window.onload = function(){
     var cross = {
         coke: 90,
@@ -31,9 +37,9 @@ window.onload = function(){
         slacks: 50
     };
 
-    piechart = Raphael("holder").pieChart();
+    chart = Raphael("holder", 600, 400).pieChart(200, 200, 100, pants);
 
-    //----------------------------------------------
+    //-- ACTIONS --------------------------------------------
 
     $("button#add").click(function(event){
         piechart.add_sector($("#label").val(), $("#value").val());
@@ -42,6 +48,10 @@ window.onload = function(){
 
     $("button#clear-log").click(function(event){
         $("#log").html("");
+    });
+
+    $("button#details").click(function(event){
+        piechart.details();
     });
 
 }
@@ -57,6 +67,7 @@ window.onload = function(){
 <input id="label" placeholder="Label" value="test1">
 <input id="value" placeholder="Value" value="120">
 <button id="add">Add Sector</button>
+<button id="details">Details</button>
 <div id="log"></div>
 <button id="clear-log">Clear</button>
 
