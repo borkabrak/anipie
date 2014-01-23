@@ -54,7 +54,9 @@ Raphael.fn.pieChart = function(x, y, radius, data){
                 arc,
                 ["z"]
             ],
-            fill: "hsl(" + color + ", 0.8, 0.8)",
+            fill: "90-" + Raphael.hsb(color,0.3,0.8) + "-" + Raphael.hsb(color,1,0.8),
+            stroke: "white",
+            "stroke-width": "2px"
         };
     };
 
@@ -108,7 +110,7 @@ Raphael.fn.pieChart = function(x, y, radius, data){
         var total = me.total();
         me.sectors.forEach(function(sector){
             var endAngle = startAngle + (sector.value / total * 360);
-            sector.wedge.animate({wedge: [startAngle, endAngle]}, 500, "ease-in");
+            sector.wedge.animate({wedge: [startAngle, endAngle]}, 500, "ease-in-out");
             startAngle = endAngle;
         });
 
