@@ -69,7 +69,7 @@ Raphael.fn.pieChart = function(x, y, radius, data){
         var value = data[label];
         var angle = value / me.total() * 360;
         var endAngle = startAngle + angle;
-        log("Wedge '" + label + " from " + startAngle + "° to " + endAngle + "°");
+        log("Wedge '" + label + ":" + value + "' from " + startAngle + "° to " + endAngle + "°");
         var wedge = me.path().attr({wedge: [startAngle, startAngle + angle]});
         startAngle = endAngle;
     });

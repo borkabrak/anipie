@@ -19,11 +19,11 @@ var log = function(text){
 };
 
 window.onload = function(){
-    var cross = {
-        coke: 90,
-        pepsi: 90,
-        dew: 90,
-        pepper: 90
+    var soda = {
+        coke: 10,
+        pepsi: 20,
+        dew: 30,
+        pepper: 40
     };
 
     var music = {
@@ -37,12 +37,12 @@ window.onload = function(){
         slacks: 500
     };
 
-    chart = Raphael("holder", 600, 400).pieChart(200, 200, 100, cross);
+    chart = Raphael("holder", 600, 400).pieChart(200, 200, 100, soda);
 
     //-- ACTIONS --------------------------------------------
 
     $("button#add").click(function(event){
-        piechart.add_sector($("#label").val(), $("#value").val());
+        chart.add_sector($("#label").val(), $("#value").val());
         $("#label").val("test" + ( parseInt($("#label").val().match(/\d+/)[0]) + 1 ));
     });
 
@@ -51,7 +51,7 @@ window.onload = function(){
     });
 
     $("button#details").click(function(event){
-        piechart.details();
+        chart.details();
     });
 
 }
