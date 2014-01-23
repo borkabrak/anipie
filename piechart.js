@@ -15,15 +15,15 @@ Raphael.fn.pieChart = function(x, y, radius, data){
     me.cx = x || 200;
     me.cy = y || 200;
     me.radius = radius || 100; 
-    me.data = data || {};
-    me.wedges = me.set();
+    me.sectors = [];
 
+    // -- METHODS -------------------------------------------------
     me.labels = function(){
-        return Object.keys(me.data);
+        return me.sectors.map(function(sector){ return sector.label });
     };
 
     me.values = function(){
-        return me.labels().map(function(label){ return me.data[label] });
+        return me.sectors.map(function(sector){ return sector.value });
     };
 
     // Define a pie chart wedge
@@ -63,21 +63,31 @@ Raphael.fn.pieChart = function(x, y, radius, data){
     };
 
     // Add sectors
-    me.initialize = function(){
+    me.initialize = function(data){
         var startAngle = 0;
-        me.labels().forEach(function(label){
-            log(label);
+        var total = 0;
+        Object.keys(data).forEach(function(key){
+            total += data[key];
+        });
+
+        Object.keys(data).forEach(function(label){
             var value = data[label];
-            var angle = value / me.total() * 360;
-            var endAngle = startAngle + angle;
-            log("Wedge '" + label + ":" + value + "' from " + startAngle + "° to " + endAngle + "°");
-            var wedge = me.path().attr({wedge: [startAngle, startAngle + angle]});
-            me.wedges.push(wedge);
-            startAngle = endAngle;
+            var angle = value / total * 360;
+            me.sectors.push({
+                label: label,
+                value: value,
+                wedge: me.path().attr({wedge: [startAngle, startAngle + angle]})
+            });
+
+            startAngle += angle;
+
         });
     };
 
-    me.initialize();
+    me.initialize(data);
+
     return me;
+
+
 };
 
