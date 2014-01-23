@@ -16,7 +16,7 @@ Raphael.fn.pieChart = function(x, y, radius, data){
     me.cy = y || 200;
     me.radius = radius || 100; 
     me.data = data || {};
-    me.elements = me.set();
+    me.wedges = me.set();
 
     me.labels = function(){
         return Object.keys(me.data);
@@ -63,17 +63,21 @@ Raphael.fn.pieChart = function(x, y, radius, data){
     };
 
     // Add sectors
-    var startAngle = 0;
-    me.labels().forEach(function(label){
-        log(label);
-        var value = data[label];
-        var angle = value / me.total() * 360;
-        var endAngle = startAngle + angle;
-        log("Wedge '" + label + ":" + value + "' from " + startAngle + "° to " + endAngle + "°");
-        var wedge = me.path().attr({wedge: [startAngle, startAngle + angle]});
-        startAngle = endAngle;
-    });
+    me.initialize = function(){
+        var startAngle = 0;
+        me.labels().forEach(function(label){
+            log(label);
+            var value = data[label];
+            var angle = value / me.total() * 360;
+            var endAngle = startAngle + angle;
+            log("Wedge '" + label + ":" + value + "' from " + startAngle + "° to " + endAngle + "°");
+            var wedge = me.path().attr({wedge: [startAngle, startAngle + angle]});
+            me.wedges.push(wedge);
+            startAngle = endAngle;
+        });
+    };
 
+    me.initialize();
     return me;
 };
 
