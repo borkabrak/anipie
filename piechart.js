@@ -28,13 +28,14 @@ Raphael.fn.pieChart = function(x, y, radius, data){
 
     // Define a pie chart wedge
     me.customAttributes.wedge = function(startAngle, endAngle){
-        // convert angles from degrees to radians
         var large_arc_flag = (endAngle - startAngle) > 180;
         var sweep_flag = 1;
         var color = (endAngle - startAngle) / 360;
+
+        // convert angles from degrees to radians
         startAngle = (startAngle % 360) * (Math.PI / 180);
         endAngle = (endAngle % 360) * (Math.PI / 180);
-      
+
         var arc = [
             "A",
             me.radius,
@@ -82,6 +83,36 @@ Raphael.fn.pieChart = function(x, y, radius, data){
             startAngle += angle;
 
         });
+    };
+
+    me.total = function(){
+        var total = 0;
+        me.sectors.forEach(function(sector){
+            total += +sector.value;
+        });
+        return total;
+    };
+
+    me.add_sector = function(label, value) {
+
+        // Add a new sector of zero angle (make the new sector the first one,
+        // or the animation looks weird)
+        me.sectors.unshift({
+            label: label,
+            value: value,
+            wedge: me.path().attr({wedge: [0, 0]})
+        });
+
+        // recalculate all sector angles and animate them to their new positions
+        var startAngle = 0;
+        var total = me.total();
+        me.sectors.forEach(function(sector){
+            var endAngle = startAngle + (sector.value / total * 360);
+            log("sector '" + sector.label + "/" + sector.value + ": " + startAngle + "° - " + endAngle + "°");
+            sector.wedge.animate({wedge: [startAngle, endAngle]}, 500, "ease-in");
+            startAngle = endAngle;
+        });
+
     };
 
     me.initialize(data);
