@@ -108,7 +108,6 @@ Raphael.fn.pieChart = function(x, y, radius, data){
         var total = me.total();
         me.sectors.forEach(function(sector){
             var endAngle = startAngle + (sector.value / total * 360);
-            log("sector '" + sector.label + "/" + sector.value + ": " + startAngle + "° - " + endAngle + "°");
             sector.wedge.animate({wedge: [startAngle, endAngle]}, 500, "ease-in");
             startAngle = endAngle;
         });
@@ -118,7 +117,6 @@ Raphael.fn.pieChart = function(x, y, radius, data){
     me.initialize(data);
 
     return me;
-
 
 };
 
