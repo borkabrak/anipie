@@ -61,12 +61,12 @@ Raphael.fn.pieChart = function(x, y, radius, data){
         return total;
     };
 
-    me.add_sector = function(label, value) {
+    me.add_sector = function(id, value) {
 
         // Add a new sector of zero angle (make the new sector the first one,
         // or the animation looks weird)
         me.sectors.unshift({
-            label: label,
+            id: id,
             value: value,
             wedge: me.path().attr({wedge: [0, 0]})
         });
@@ -83,8 +83,8 @@ Raphael.fn.pieChart = function(x, y, radius, data){
     };
 
     // Initialize
-    Object.keys(data).forEach(function(label){
-        me.add_sector(label, data[label]);
+    Object.keys(data).forEach(function(id){
+        me.add_sector(id, data[id]);
     });
 
     return me;
