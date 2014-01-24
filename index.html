@@ -30,17 +30,17 @@ window.onload = function(){
 
     //-- ACTIONS --------------------------------------------
 
-    $("button#add").click(function(event){
+    $("button[data-action=add]").click(function(event){
         chart.add_sector($("#label").val(), $("#value").val());
         $("#label").val("test" + ( parseInt($("#label").val().match(/\d+/)[0]) + 1 ));
     });
 
-    $("button#clear-log").click(function(event){
+    $("button[data-action=clear]").click(function(event){
         $("#log").html("");
     });
 
-    $("button#details").click(function(event){
-        chart.details();
+    $("button[data-action=remove]").click(function(event){
+        log("Remove which sector?");
     });
 
 }
@@ -55,10 +55,10 @@ window.onload = function(){
 <div id="holder"></div>
 <input id="label" placeholder="Label" value="test1">
 <input id="value" placeholder="Value" value="120">
-<button id="add">Add Sector</button>
-<button id="details">Details</button>
+<button data-action="add">Add Sector</button>
+<button data-action="remove">Remove Sector</button>
 <div id="log"></div>
-<button id="clear-log">Clear</button>
+<button data-action="clear">Clear</button>
 
 </body>
 
