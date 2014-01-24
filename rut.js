@@ -2,44 +2,39 @@
 //
 // Utility toolbox using (and assuming) Raphael
 
-Rut = function(paper){
+(function(paper){
     'use strict';
-    var me = this;
 
-    // Raphael paper object
-    me.paper = paper;
+// Draw a line
+//  'from' and 'to' describe points, and should be objects with 'x' and 'y'
+//  properties.
+Raphael.fn.line = function line(from, to, attributes) {
+    var paper = this;
+    attributes = attributes || {};
+    attributes.stroke = attributes.stroke || "#000";
+    attributes['stroke-width'] = attributes['stroke-width'] || "2px";
+    var patharr = ["M", from.x, from.y, "L", to.x, to.y];
+    return paper.path(patharr).attr(attributes);
+};
 
+// Draw a mark at the point (just to indicate where it is)  Optional text
+// label and color
+Raphael.fn.mark = function(point, label, color) {
+    var paper = this;
+    var size = 5; 
+    label = label || "";
+    color = color || "#833";
 
-    // Draw a line
-    //  'from' and 'to' describe points, and should be objects with 'x' and 'y'
-    //  properties.
-    me.line = function line(from, to, attributes) {
-
-        attributes = attributes || {};
-        attributes.stroke = attributes.stroke || "#000";
-        attributes['stroke-width'] = attributes['stroke-width'] || "2px";
-        var patharr = ["M", from.x, from.y, "L", to.x, to.y];
-        return me.paper.path(patharr).attr(attributes);
+    var attributes = {
+        stroke: color,
+        "stroke-width": "1px"
     };
 
-    // Draw a mark at the point (just to indicate where it is)  Optional text
-    // label and color
-    me.mark = function(point, label, color) {
-        var size = 5; 
-        label = label || "";
-        color = color || "#833";
-
-        var attributes = {
-            stroke: color,
-            "stroke-width": "1px"
-        };
-
-        return me.paper.set(
-            me.line({x: point.x - size, y: point.y }, {x: point.x + size, y: point.y}).attr(attributes),
-            me.line({x: point.x, y: point.y - size }, {x: point.x, y: point.y + size}).attr(attributes),
-            me.paper.text(point.x - size - 5, point.y, label).attr(attributes)
-        );
-    };
+    return paper.set(
+        paper.line({x: point.x - size, y: point.y }, {x: point.x + size, y: point.y}).attr(attributes),
+        paper.line({x: point.x, y: point.y - size }, {x: point.x, y: point.y + size}).attr(attributes),
+        paper.text(point.x - size - 5, point.y, label).attr(attributes)
+    );
 };
 
 Raphael.fn.showRuler = function(interval){
@@ -76,3 +71,4 @@ Raphael.fn.showRuler = function(interval){
     return elements;
 
 };
+})();
