@@ -62,13 +62,14 @@ Raphael.fn.pieChart = function(x, y, radius, data){
     };
 
     me.add_sector = function(id, value) {
+        log("add_sector(" + id + ", " + value + ")");
 
         // Add a new sector of zero angle (make the new sector the first one,
         // or the animation looks weird)
         me.sectors.unshift({
             id: id,
             value: value,
-            wedge: me.path().attr({wedge: [0, 0]})
+            wedge: me.path().attr({wedge: [0, 0]}),
         });
 
         // recalculate all sector angles and animate them to their new positions
@@ -76,7 +77,12 @@ Raphael.fn.pieChart = function(x, y, radius, data){
         var total = me.total();
         me.sectors.forEach(function(sector){
             var endAngle = startAngle + (sector.value / total * 360);
-            sector.wedge.animate({wedge: [startAngle, endAngle]}, 500, "ease-in-out");
+            var text_location = get_point(0.6, (endAngle - startAngle / 2));
+            log("Labeling with '" + id + "' at " + text_location.x + ", " + text_location.y);
+            sector.wedge.animate({
+                wedge: [startAngle, endAngle],
+            }, 500, "ease-in-out");
+            sector.label = me.text(text_location.x, text_location.y, id);
             startAngle = endAngle;
         });
 
@@ -89,5 +95,15 @@ Raphael.fn.pieChart = function(x, y, radius, data){
 
     return me;
 
+    // PRIVATE FUNCTIONS
+    // ====================
+    
+    function get_point(distance_from_center, angle) {
+        var radian = Math.PI / 180;
+        return {
+            x: me.cx + me.radius * distance_from_center * Math.cos(-angle * radian),
+            y: me.cy + me.radius * distance_from_center * Math.sin(-angle * radian)
+        };
+    };
 };
 
