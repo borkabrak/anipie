@@ -18,13 +18,6 @@ Raphael.fn.pieChart = function(x, y, radius, data){
     me.sectors = [];
 
     // -- METHODS -------------------------------------------------
-    me.labels = function(){
-        return me.sectors.map(function(sector){ return sector.label });
-    };
-
-    me.values = function(){
-        return me.sectors.map(function(sector){ return sector.value });
-    };
 
     // Define a pie chart wedge
     me.customAttributes.wedge = function(startAngle, endAngle){
@@ -60,33 +53,6 @@ Raphael.fn.pieChart = function(x, y, radius, data){
         };
     };
 
-    // Return total value of all data
-    me.total = function(){
-        return me.values().reduce(function(x,y){ return x + y });
-    };
-
-    // Add sectors
-    me.initialize = function(data){
-        var startAngle = 0;
-        var total = 0;
-        Object.keys(data).forEach(function(key){
-            total += data[key];
-        });
-
-        Object.keys(data).forEach(function(label){
-            var value = data[label];
-            var angle = value / total * 360;
-            me.sectors.push({
-                label: label,
-                value: value,
-                wedge: me.path().attr({wedge: [startAngle, startAngle + angle]})
-            });
-
-            startAngle += angle;
-
-        });
-    };
-
     me.total = function(){
         var total = 0;
         me.sectors.forEach(function(sector){
@@ -116,7 +82,10 @@ Raphael.fn.pieChart = function(x, y, radius, data){
 
     };
 
-    me.initialize(data);
+    // Initialize
+    Object.keys(data).forEach(function(label){
+        me.add_sector(label, data[label]);
+    });
 
     return me;
 
