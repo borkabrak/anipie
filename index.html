@@ -9,7 +9,7 @@
 
     <script src="/script/jquery/jquery.js"></script>
     <script src="/script/raphael/raphael.js"></script>
-    <script src="/script/rut.js"></script>
+    <script src="rut.js"></script>
     <script src="piechart.js"></script>
 
 <script>
@@ -28,7 +28,7 @@ window.onload = function(){
     };
 
     r = Raphael("holder", 800, 600);
-    r.showRuler();
+    r.showRuler(50);
     chart = r.pieChart(300, 300, 200, soda);
 
     //-- ACTIONS --------------------------------------------
