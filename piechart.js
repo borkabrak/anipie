@@ -16,6 +16,7 @@ Raphael.fn.pieChart = function(x, y, radius, data){
     me.cy = y || 200;
     me.radius = radius || 100; 
     me.sectors = [];
+    me.elements = [];   // All Raphael elements (for chaining, I think)
 
     // -- METHODS -------------------------------------------------
 
@@ -70,28 +71,32 @@ Raphael.fn.pieChart = function(x, y, radius, data){
             id: id,
             value: value,
             wedge: me.path().attr({wedge: [0, 0]}),
+            label: me.text(0,0,id)
         });
 
+    };
+
+    me.draw = function(){
         // recalculate all sector angles and animate them to their new positions
         var startAngle = 0;
         var total = me.total();
         me.sectors.forEach(function(sector){
+            sector.label.remove();
             var endAngle = startAngle + (sector.value / total * 360);
-            var text_location = get_point(0.6, (endAngle - startAngle / 2));
-            log("Labeling with '" + id + "' at " + text_location.x + ", " + text_location.y);
+            log("sector '" + sector.id + "' goes from " + startAngle + "° to " + endAngle + "°");
             sector.wedge.animate({
                 wedge: [startAngle, endAngle],
             }, 500, "ease-in-out");
-            sector.label = me.text(text_location.x, text_location.y, id);
             startAngle = endAngle;
         });
-
     };
 
     // Initialize
     Object.keys(data).forEach(function(id){
         me.add_sector(id, data[id]);
     });
+
+    me.draw();
 
     return me;
 
